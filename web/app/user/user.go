@@ -14,6 +14,18 @@ import (
 type User struct{
 	Name string `json:"name"`
 	Sub string `json:"sub"`
+	Allowed bool
+}
+
+
+type Roles struct{
+	AssignedRoles []Role
+}
+
+type Role struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 // Handler for our logged-in user page.
 func Handler(ctx *gin.Context) {
@@ -21,14 +33,17 @@ func Handler(ctx *gin.Context) {
 	profile := session.Get("profile")
 
 	//ctx.HTML(http.StatusOK, "user.html", profile)
-	CheckRole(profile)
+	user := checkUser(profile)
+	checkRole(&user,"Authorized")
+	if user.Allowed{
+		ctx.Redirect(http.StatusTemporaryRedirect, "http://192.168.163.132:8080/test1/")
+	}else{
+		ctx.HTML(http.StatusOK, "user.html", profile)
+	}
 
-	ctx.Redirect(http.StatusTemporaryRedirect, "http://192.168.163.132:8080/test1/")
 }
 
-
-func CheckRole(profile interface{}){
-
+func checkUser(profile interface{}) User{
 	profileData,err := json.Marshal(profile)
 	if err != nil{
 		fmt.Errorf(err.Error())
@@ -38,7 +53,10 @@ func CheckRole(profile interface{}){
 	if err != nil{
 		fmt.Errorf(err.Error())
 	}
-	fmt.Println(u.Name)
+	return u
+}
+
+func checkRole(u *User, checkRole string){
 
 	url := "https://"+os.Getenv("AUTH0_DOMAIN")+"/api/v2/users/"+u.Sub+"/roles"
 
@@ -50,8 +68,21 @@ func CheckRole(profile interface{}){
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
+	var roles Roles
+	err := json.Unmarshal(body,&roles)
+	if err != nil{
+		fmt.Errorf(err.Error())
+	}
+	for _,role := range(roles.AssignedRoles) {
+		if role.Name == checkRole {
+			u.Allowed = true
+			break
+		}else{
+			u.Allowed = false
+		}
+	}
 
-	fmt.Println(res)
-	fmt.Println(u.Sub)
-	fmt.Println(string(body))
+	//fmt.Println(res)
+	//fmt.Println(u.Sub)
+	//fmt.Println(string(body))
 }
