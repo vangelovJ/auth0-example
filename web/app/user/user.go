@@ -73,7 +73,7 @@ func checkRole(u *User, checkRole string){
 	if err != nil{
 		fmt.Errorf(err.Error())
 	}
-	for _,role := range(roles.AssignedRoles) {
+	for _,role := range roles.AssignedRoles {
 		if role.Name == checkRole {
 			u.Allowed = true
 			break
@@ -81,7 +81,8 @@ func checkRole(u *User, checkRole string){
 			u.Allowed = false
 		}
 	}
-
+	fmt.Println(u.Allowed)
+	fmt.Println(roles)
 	//fmt.Println(res)
 	//fmt.Println(u.Sub)
 	//fmt.Println(string(body))
