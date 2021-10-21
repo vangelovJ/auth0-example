@@ -52,3 +52,5 @@ func (a *Authenticator) VerifyIDToken(ctx context.Context, token *oauth2.Token) 
 
 	return a.Verifier(oidcConfig).Verify(ctx, rawIDToken)
 }
+
+

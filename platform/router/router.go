@@ -7,13 +7,13 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 
-	"../authenticator"
-	"../middleware"
-	"../../web/app/callback"
-	"../../web/app/home"
-	"../../web/app/login"
-	"../../web/app/logout"
-	"../../web/app/user"
+	"github.com/vangelovj/auth0-example/platform/authenticator"
+	"github.com/vangelovj/auth0-example/platform/middleware"
+	"github.com/vangelovj/auth0-example/web/app/callback"
+	"github.com/vangelovj/auth0-example/web/app/home"
+	"github.com/vangelovj/auth0-example/web/app/login"
+	"github.com/vangelovj/auth0-example/web/app/logout"
+	"github.com/vangelovj/auth0-example/web/app/user"
 )
 
 // New registers the routes and returns the router.

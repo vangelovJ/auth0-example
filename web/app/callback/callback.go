@@ -6,7 +6,8 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"../../../platform/authenticator"
+	"github.com/vangelovj/auth0-example/platform/authenticator"
+	"github.com/vangelovj/auth0-example/platform/roles"
 )
 
 // Handler for our callback.
@@ -45,6 +46,6 @@ func Handler(auth *authenticator.Authenticator) gin.HandlerFunc {
 		}
 
 		// Redirect to logged in page.
-		ctx.Redirect(http.StatusTemporaryRedirect, "/user")
+		ctx.Redirect(http.StatusTemporaryRedirect, "http://192.168.163.132:8080/test1/")
 	}
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"../../../platform/authenticator"
+	"github.com/vangelovj/auth0-example/platform/authenticator"
 )
 
 // Handler for our login.
