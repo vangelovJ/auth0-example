@@ -18,11 +18,9 @@ type User struct{
 }
 
 
-type Roles struct{
-	AssignedRoles []Role
-}
 
-type Role struct {
+
+type Role []struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
@@ -68,12 +66,12 @@ func checkRole(u *User, checkRole string){
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-	var roles Roles
+	var roles Role
 	err := json.Unmarshal(body,&roles)
 	if err != nil{
 		fmt.Errorf(err.Error())
 	}
-	for _,role := range roles.AssignedRoles {
+	for _,role := range roles {
 		if role.Name == checkRole {
 			u.Allowed = true
 			break
